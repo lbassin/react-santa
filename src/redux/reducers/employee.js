@@ -11,9 +11,25 @@ const reducer = function (state = initialState, action) {
     switch (action.type) {
         case 'EMPLOYEE_FETCH_ALL':
             return Object.assign({}, state);
+        case 'EMPLOYEE_CREATE':
+            action.payload.id = uuidv4();
+            state.employees.push(action.payload);
+
+            return Object.assign({}, state);
+        case 'EMPLOYEE_FETCH_ONE':
+            const employee = state.employees.find(element => element.id === action.payload);
+
+            return Object.assign({}, state, { employee });
         default:
             return state;
     }
+}
+
+function uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        let r = Math.random() * 16 | 0, v = c === 'x' ? r : ((r & 0x3) | 0x8);
+        return v.toString(16);
+    });
 }
 
 export default reducer;

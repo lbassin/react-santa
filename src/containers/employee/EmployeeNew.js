@@ -1,6 +1,7 @@
 import React from 'react';
 import EmployeeForm from '../employee/EmployeeForm';
-import EmployeeRepository from "../../repositories/EmployeeRepository";
+import { connect } from "react-redux";
+import { createEmployee } from "../../redux/actions/employee";
 
 const formStyle = {
     width: '80%',
@@ -22,7 +23,7 @@ class EmployeeNew extends React.Component {
     }
 
     handleSubmit = (employee) => {
-        EmployeeRepository.create(employee);
+        this.props.createEmployee(employee);
 
         this.setState({
             employeeCreated: true
@@ -40,4 +41,11 @@ class EmployeeNew extends React.Component {
     }
 }
 
-export default EmployeeNew;
+
+const mapDispatchToProps = dispatch => {
+    return {
+        createEmployee: (employee) => dispatch(createEmployee(employee))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(EmployeeNew);

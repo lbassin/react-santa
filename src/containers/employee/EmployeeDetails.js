@@ -1,6 +1,7 @@
 import React from 'react';
-import EmployeeRepository from "../../repositories/EmployeeRepository";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { fetchEmployee } from "../../redux/actions/employee";
 
 const DetailsStyle = {
     width: '80%',
@@ -16,20 +17,12 @@ class EmployeeDetails extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            id: props.match.params.id,
-            employee: {}
-        }
+        this.props.dispatch(fetchEmployee(props.match.params.id));
     }
 
-    componentDidMount() {
-        EmployeeRepository.fetchOne(this.state.id).then(employee => {
-            this.setState({ employee });
-        });
-    }
 
     render() {
-        const employee = this.state.employee;
+        const employee = this.props.employee;
 
         return (
             <div style={DetailsStyle}>
@@ -50,4 +43,11 @@ class EmployeeDetails extends React.Component {
     }
 }
 
-export default EmployeeDetails;
+const mapStateToProps = state => {
+    const employee = state.employeeReducer.employee || {};
+
+    return { employee };
+}
+
+
+export default connect(mapStateToProps, null)(EmployeeDetails);
