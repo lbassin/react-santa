@@ -1,6 +1,7 @@
 import React from 'react';
 import EmployeeRow from "../../components/Employee/EmployeeRow";
-import EmployeeRepository from '../../repositories/EmployeeRepository';
+import { connect } from "react-redux";
+import { fetchEmployees } from "../../redux/actions/employee";
 
 const rowStyle = {
     border: '1px solid #000',
@@ -17,22 +18,11 @@ class EmployeeList extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            employees: []
-        }
-    }
-
-    componentDidMount() {
-        EmployeeRepository.fetchAll().then((employees) => {
-            this.setState({
-                employees
-            });
-        });
+        this.props.fetchEmployees();
     }
 
     render() {
-        const employees = this.state.employees;
-        console.log(employees);
+        const employees = this.props.employees;
 
         return (
             <table style={tableStyle}>
@@ -59,4 +49,14 @@ class EmployeeList extends React.Component {
     }
 }
 
-export default EmployeeList;
+const mapStateToProps = state => {
+    const { employees } = state.employeeReducer;
+
+    return { employees };
+}
+
+const mapDispatchToProps = dispatch => ({
+    fetchEmployees: () => dispatch(fetchEmployees())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(EmployeeList);
