@@ -10,7 +10,7 @@ class EmployeeForm extends React.Component {
         super(props);
 
         this.state = {
-            test: '',
+            name: '',
             role: ''
         }
     }
