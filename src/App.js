@@ -12,6 +12,9 @@ function App() {
             <Header/>
             <BrowserRouter>
                 <HeaderNav/>
+
+                <hr/>
+
                 <Switch>
                     <Route path="/employee" component={Employee}/>
                     <Route exact path="/" component={Home}/>
